@@ -1,0 +1,66 @@
+---
+import { config } from "../utils/config";
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const query = data.get("query");
+    const llms = data.get("llms");
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1 class="text-3xl font-bold text-center mx-auto max-w-md">
+			Welcome to xLLM
+		</h1>
+		<h3 class="text-lg font-medium text-center mx-auto max-w-md">
+			Select your LLM, fire your query, get your answers!
+		</h3>
+
+		<div class="flex flex-col justify-center mt-10">
+			<form method="post">
+				<textarea
+				name="query"
+				class="w-full h-40 bg-gray-100 border-gray-200 rounded px-4 py-2"
+				placeholder="Enter your query..."
+				required
+				></textarea>
+				<div class="flex flex-row justify-between mb-6">
+				<select
+					name="llms"
+					id="llms"
+					class="bg-gray-100 border-gray-200 rounded p-2 w-full text-lg"
+					multiple
+					required>
+						{config.models.map((model) => (
+							<option value={model.value}>{model.name}</option>
+						))}
+				</select>
+				<button
+					name="generateBtn"
+					class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+					type="submit">
+					Generate
+				</button>
+			</div>
+			</form>
+		</div>
+
+		<div class="flex flex-col justify-center mt-10">
+			
+		</div>
+	</body>
+</html>
